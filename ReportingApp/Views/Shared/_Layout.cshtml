@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ReportingApp</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/ReportingApp.styles.css" asp-append-version="true" />
+    <link href="~/css/output.css" asp-append-version="true" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="/js/icon.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+    <body class="scroll-smooth">
+        <header class="sticky top-0 z-50 border-b border-gray-200 bg-gray-50 backdrop-blur">
+            <div class="mx-auto flex h-20 items-center justify-between px-6 lg:px-8">
+
+                <!-- Logo -->
+                <a asp-controller="Home" asp-action="Index" class="flex items-center">
+                    <img src="/images/BayMobil_Siyah_transparent_horiz.png"  alt="BayMobil" class="h-10 w-auto" />
+                </a>
+
+                <!-- Nav -->
+                <nav id="mainNav"
+                     class="absolute left-0 top-20 flex hidden w-full flex-col items-center gap-5 border-b border-gray-200 bg-gray-50 px-6 py-6 text-sm font-semibold text-gray-800
+                    lg:static lg:flex lg:w-auto lg:flex-row lg:gap-14 lg:justify-self-center lg:border-0 lg:bg-gray-50 lg:px-0 lg:py-0">
+
+                <a asp-controller="Home" asp-action="Index" asp-fragment="CiroRaporu"  class="navbar-item">  Kar/Zarar Raporu  </a>
+                <a asp-controller="Home" asp-action="Index" asp-fragment="UrunKarlilikRaporu"  class="navbar-item"> Ürün karlılık raporu </a>
+                <a asp-controller="Home" asp-action="Index" asp-fragment="MusteriKarlilikRaporu" class="navbar-item"> Müşteri karlılık raporu </a>
+                <a asp-controller="Home" asp-action="Envanter" class="navbar-item"> Envanter raporu </a>
+                </nav>
+
+                <div></div>
+
+                <!-- Mobile Menu Button -->
+                <button id="menuBtn"
+                        type="button"
+                        class="flex h-11 w-11 items-center justify-center rounded-xl border border-gray-200 text-2xl text-gray-800 no-underline lg:hidden">
+                    ☰
+                </button>
+            </div>
+
+        
+        </header>
+        <div>
+            <main role="main" >
+                @RenderBody()
+            </main>
+        </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container px-8">
+            &copy; 2026 - ReportingApp - <a asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+
+
+<script>
+    const menuBtn = document.getElementById("menuBtn");
+    const mainNav = document.getElementById("mainNav");
+    
+
+    menuBtn.addEventListener("click", () => {
+        mainNav.classList.toggle("hidden");
+        menuBtn.textContent = mainNav.classList.contains("hidden") ? "☰" : "×";
+    });
+
+</script>

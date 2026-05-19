@@ -1,0 +1,101 @@
+﻿@model Reporting.Models.ProductProfitReportViewModel
+@{
+    
+    string periyot = Model.Periyot ?? "gunluk";
+
+    string baslik =
+    periyot == "haftalik" ? "Haftalık" :
+    periyot == "aylik" ? "Aylık" :
+    periyot == "yillik" ? "Yıllık" :
+    "Günlük";
+
+    var top10KarliUrun = Model.Urunler
+        .OrderByDescending(x => x.Kar)
+        .Take(10)
+        .ToList();
+
+    decimal maxKar = top10KarliUrun.Any() ? top10KarliUrun.Max(x => x.Kar) : 1;
+}
+
+<div>
+
+    <div class="mb-8 flex items-center justify-between">
+        <div>
+            <p class="kirmizi-baslik">Ürün Karlılık Raporu</p>
+            <p class="mt-1 text-sm text-slate-500">
+                Ürün bazında satış, maliyet ve kar performansı.
+            </p>
+        </div>
+    </div>
+
+    <div class="mb-8 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+        <div class="mb-5 flex items-center justify-between">
+            <h2 class="text-lg font-bold text-slate-900">En Karlı 10 Ürün</h2>
+            <span class="text-sm text-slate-500">Kar bazlı sıralama</span>
+        </div>
+
+        <div class="space-y-4">
+            @foreach (var item in top10KarliUrun)
+            {
+                decimal width = maxKar == 0 ? 0 : (item.Kar / maxKar) * 100;
+
+                <div>
+                    <div class="mb-1 flex items-center justify-between gap-4">
+                        <p class="truncate text-sm font-semibold text-slate-700">
+                            @item.StokAdi
+                        </p>
+
+                        <p class="whitespace-nowrap text-sm font-bold text-slate-900">
+                            @item.Kar.ToString("N2") ₺
+                        </p>
+                    </div>
+
+                    <div class="h-3 overflow-hidden rounded-full bg-slate-100">
+                        <div class="h-full rounded-full bg-blue-600"
+                             style="width:@width.ToString("0").Replace(",", ".")%">
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+        <div class="mb-5 flex items-center justify-between">
+            <h2 class="text-lg font-bold text-slate-900">Ürün Detayları</h2>
+            <span class="text-sm text-slate-500">@Model.Urunler.Count ürün</span>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead>
+                    <tr class="border-b bg-slate-50 text-left text-xs uppercase text-black">
+                        <th class="p-3">Ürün Kodu</th>
+                        <th class="p-3">Ürün Adı</th>
+                        <th class="p-3 text-right">Miktar</th>
+                        <th class="p-3 text-right">Ciro</th>
+                        <th class="p-3 text-right">Maliyet</th>
+                        <th class="p-3 text-right">Kar</th>
+                        <th class="p-3 text-right">Kar %</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model.Urunler)
+                    {
+                        <tr class="border-b last:border-0 hover:bg-slate-50">
+                            <td class="p-3 font-medium text-slate-700">@item.StokKodu</td>
+                            <td class="p-3">@item.StokAdi</td>
+                            <td class="p-3 text-right">@item.Miktar.ToString("N2")</td>
+                            <td class="p-3 text-right">@item.Ciro.ToString("N2") ₺</td>
+                            <td class="p-3 text-right">@item.Maliyet.ToString("N2") ₺</td>
+                            <td class="p-3 text-right font-semibold text-blue-600">@item.Kar.ToString("N2") ₺</td>
+                            <td class="p-3 text-right">%@item.KarOrani.ToString("N2")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
