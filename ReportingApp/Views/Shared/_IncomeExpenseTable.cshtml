@@ -1,0 +1,54 @@
+﻿@model List<Reporting.Models.IncomeExpenseDetailRow>
+
+@{
+    string baslik = ViewData["Baslik"]?.ToString() ?? "";
+    string colorClass = ViewData["ColorClass"]?.ToString() ?? "";
+}
+
+<div class="mb-6 rounded-xl border bg-white shadow-sm">
+    <div class="flex items-center justify-between border-b px-5 py-4">
+        <h2 class="font-bold @colorClass">@baslik</h2>
+
+        <div class="text-sm font-bold @colorClass">
+            @Model.Sum(x => x.Tutar).ToString("N2") ₺
+        </div>
+    </div>
+
+    <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+            <thead class="bg-slate-50">
+                <tr class="border-b bg-slate-50 text-left text-xs text-black uppercase">
+                    <th class="px-5 py-3 text-left">Tarih</th>
+                    <th class="px-5 py-3 text-left">Fiş No</th>
+                    <th class="px-5 py-3 text-left">Cari</th>
+                    <th class="px-5 py-3 text-right">Tutar</th>
+                </tr>
+            </thead>
+
+            <tbody class="divide-y">
+                @if (Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr class="border-b last:border-0 hover:bg-slate-50">
+                            <td class="px-5 py-3">@item.Tarih.ToString("dd.MM.yyyy")</td>
+                            <td class="px-5 py-3">@item.FisNo</td>
+                            <td class="px-5 py-3">@item.CariAdi</td>
+                            <td class="px-5 py-3 text-right font-semibold">
+                                @item.Tutar.ToString("N2") ₺
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4" class="px-5 py-6 text-center text-slate-500">
+                            Bu dönemde kayıt bulunamadı.
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,184 @@
+﻿@model Reporting.Models.CurrentAccountStatementViewModel
+
+@{
+    ViewData["Title"] = "Cari Hesap Ekstresi";
+}
+
+<div class="scroll-smooth px-4 pb-8 md:px-24 md:pb-16">
+
+    <div class="my-8 mb-6">
+        <h1 class="text-2xl font-bold text-slate-900">Cari Hesap Ekstresi</h1>
+        <p class="mt-1 text-sm text-slate-500">
+            Seçilen cariye ait borç, alacak ve bakiye hareketleri.
+        </p>
+    </div>
+
+    <form method="get" class="mb-6 flex flex-wrap items-end gap-4 rounded-xl border bg-white p-4 shadow-sm">
+
+        <div>
+            <label class="mb-1 block text-sm font-semibold text-slate-700">Cari</label>
+            <select name="cariRef" class="min-w-[280px] rounded-lg border px-3 py-2 text-sm">
+                <option value="">Cari seçiniz</option>
+
+                @foreach (var cari in Model.Cariler)
+                {
+                    <option value="@cari.LogicalRef" selected="@(Model.CariRef == cari.LogicalRef)">
+                        @cari.Kod - @cari.Ad
+                    </option>
+                }
+            </select>
+        </div>
+
+        <div>
+            <label class="mb-1 block text-sm font-semibold text-slate-700">Başlangıç Tarihi</label>
+            <input type="date"
+                   name="baslangicTarihi"
+                   value="@Model.BaslangicTarihi.ToString("yyyy-MM-dd")"
+                   class="rounded-lg border px-3 py-2 text-sm" />
+        </div>
+
+        <div>
+            <label class="mb-1 block text-sm font-semibold text-slate-700">Bitiş Tarihi</label>
+            <input type="date"
+                   name="bitisTarihi"
+                   value="@Model.BitisTarihi.ToString("yyyy-MM-dd")"
+                   class="rounded-lg border px-3 py-2 text-sm" />
+        </div>
+
+        <button type="submit"
+                class="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white">
+            Listele
+        </button>
+
+        <a asp-controller="Financial"
+           asp-action="CariHesapEkstresiExcel"
+           asp-route-cariRef="@Model.CariRef"
+           asp-route-baslangicTarihi="@Model.BaslangicTarihi.ToString("yyyy-MM-dd")"
+           asp-route-bitisTarihi="@Model.BitisTarihi.ToString("yyyy-MM-dd")"
+           class="rounded-lg bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700">
+            Excel İndir
+        </a>
+
+    </form>
+
+    @if (Model.CariRef == null)
+    {
+        <div class="rounded-xl border bg-white p-6 text-slate-500 shadow-sm">
+            Lütfen cari seçiniz.
+        </div>
+    }
+    else
+    {
+        <div class="mb-6 rounded-xl border bg-white p-5 shadow-sm">
+            <div class="text-sm text-slate-500">Seçili Cari</div>
+            <div class="mt-1 text-lg font-bold text-slate-900">
+                @Model.CariKodu - @Model.CariAdi
+            </div>
+        </div>
+
+        <div class="mb-6 grid grid-cols-1 gap-4 md:grid-cols-4">
+
+            <div class="rounded-xl border bg-white p-5 shadow-sm">
+                <div class="text-sm text-slate-500">Devir Bakiye</div>
+                <div class="mt-2 text-xl font-bold text-slate-800">
+                    @Model.DevirBakiye.ToString("N2") ₺
+                </div>
+            </div>
+
+            <div class="rounded-xl border bg-white p-5 shadow-sm">
+                <div class="text-sm text-slate-500">Toplam Borç</div>
+                <div class="mt-2 text-xl font-bold text-red-600">
+                    @Model.ToplamBorc.ToString("N2") ₺
+                </div>
+            </div>
+
+            <div class="rounded-xl border bg-white p-5 shadow-sm">
+                <div class="text-sm text-slate-500">Toplam Alacak</div>
+                <div class="mt-2 text-xl font-bold text-green-600">
+                    @Model.ToplamAlacak.ToString("N2") ₺
+                </div>
+            </div>
+
+            <div class="rounded-xl border bg-white p-5 shadow-sm">
+                <div class="text-sm text-slate-500">Son Bakiye</div>
+                <div class="mt-2 text-xl font-bold @(Model.SonBakiye >= 0 ? "text-red-600" : "text-green-600")">
+                    @Model.SonBakiye.ToString("N2") ₺
+                </div>
+            </div>
+
+        </div>
+
+        <div class="rounded-xl border bg-white shadow-sm">
+            <div class="border-b px-5 py-4">
+                <h2 class="font-bold text-slate-800">Cari Hareketleri</h2>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead class="bg-slate-50 text-left text-slate-600">
+                        <tr>
+                            <th class="px-5 py-3">Tarih</th>
+                            <th class="px-5 py-3">Fiş No</th>
+                            <th class="px-5 py-3">Açıklama</th>
+                            <th class="px-5 py-3 text-right">Borç</th>
+                            <th class="px-5 py-3 text-right">Alacak</th>
+                            <th class="px-5 py-3 text-right">Bakiye</th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="divide-y">
+                        <tr class="bg-slate-50 font-bold">
+                            <td class="px-5 py-3" colspan="5">Devir Bakiye</td>
+                            <td class="px-5 py-3 text-right">
+                                @Model.DevirBakiye.ToString("N2") ₺
+                            </td>
+                        </tr>
+
+                        @if (Model.Hareketler.Any())
+                        {
+                            foreach (var item in Model.Hareketler)
+                            {
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-5 py-3">@item.Tarih.ToString("dd.MM.yyyy")</td>
+                                    <td class="px-5 py-3">@item.FisNo</td>
+                                    <td class="px-5 py-3">@item.Aciklama</td>
+                                    <td class="px-5 py-3 text-right text-red-600">
+                                        @(item.Borc == 0 ? "-" : item.Borc.ToString("N2") + " ₺")
+                                    </td>
+                                    <td class="px-5 py-3 text-right text-green-600">
+                                        @(item.Alacak == 0 ? "-" : item.Alacak.ToString("N2") + " ₺")
+                                    </td>
+                                    <td class="px-5 py-3 text-right font-semibold">
+                                        @item.Bakiye.ToString("N2") ₺
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="6" class="px-5 py-6 text-center text-slate-500">
+                                    Bu tarih aralığında hareket bulunamadı.
+                                </td>
+                            </tr>
+                        }
+
+                        <tr class="bg-slate-50 font-bold">
+                            <td class="px-5 py-3" colspan="3">Toplam</td>
+                            <td class="px-5 py-3 text-right text-red-600">
+                                @Model.ToplamBorc.ToString("N2") ₺
+                            </td>
+                            <td class="px-5 py-3 text-right text-green-600">
+                                @Model.ToplamAlacak.ToString("N2") ₺
+                            </td>
+                            <td class="px-5 py-3 text-right">
+                                @Model.SonBakiye.ToString("N2") ₺
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+
+</div>

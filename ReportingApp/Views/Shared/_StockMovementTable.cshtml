@@ -1,0 +1,66 @@
+﻿@model List<Reporting.Models.StockMovementReportRow>
+
+@{
+    string baslik = ViewData["Baslik"]?.ToString() ?? "";
+    string anaKolon = ViewData["AnaKolon"]?.ToString() ?? "Net";
+    string colorClass = ViewData["ColorClass"]?.ToString() ?? "text-slate-600";
+}
+
+<div class="mb-6 rounded-xl border bg-white shadow-sm">
+    <div class="border-b px-5 py-4">
+        <h2 class="font-bold @colorClass">@baslik</h2>
+    </div>
+
+    <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+            <thead class="bg-slate-50 text-left text-slate-600">
+                <tr>
+                    <th class="px-5 py-3">Stok Kodu</th>
+                    <th class="px-5 py-3">Stok Adı</th>
+                    <th class="px-5 py-3 text-right">Hareket Sayısı</th>
+                    <th class="px-5 py-3 text-right">Giriş</th>
+                    <th class="px-5 py-3 text-right">Çıkış</th>
+                    <th class="px-5 py-3 text-right">@anaKolon</th>
+                </tr>
+            </thead>
+
+            <tbody class="divide-y">
+                @if (Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr class="hover:bg-slate-50">
+                            <td class="px-5 py-3">@item.StokKodu</td>
+                            <td class="px-5 py-3">@item.StokAdi</td>
+                            <td class="px-5 py-3 text-right">@item.HareketSayisi</td>
+                            <td class="px-5 py-3 text-right text-green-600">@item.GirisMiktari.ToString("N2")</td>
+                            <td class="px-5 py-3 text-right text-red-600">@item.CikisMiktari.ToString("N2")</td>
+                            <td class="px-5 py-3 text-right font-bold">
+                                @if (anaKolon == "Giriş")
+                                {
+                                    @item.GirisMiktari.ToString("N2")
+                                }
+                                else if (anaKolon == "Çıkış")
+                                {
+                                    @item.CikisMiktari.ToString("N2")
+                                }
+                                else
+                                {
+                                    @item.NetDegisim.ToString("N2")
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="6" class="px-5 py-6 text-center text-slate-500">
+                            Bu tarih aralığında kayıt bulunamadı.
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

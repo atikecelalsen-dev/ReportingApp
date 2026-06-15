@@ -1,0 +1,138 @@
+﻿@model Reporting.Models.IncomeExpenseReportViewModel
+
+@{
+    ViewData["Title"] = "Gelir-Gider Özeti";
+
+    var satislar = Model.Detaylar.Where(x => x.Kalem == "Satışlar").ToList();
+    var alislar = Model.Detaylar.Where(x => x.Kalem == "Alışlar").ToList();
+    var hizmetGiderleri = Model.Detaylar.Where(x => x.Kalem == "Hizmet Giderleri").ToList();
+}
+
+<div class="scroll-smooth px-4 pb-8 md:px-24 md:pb-16">
+
+    <div class="my-8">
+        <p class="kirmizi-baslik">Gelir-Gider Özeti</p>
+        <p class="mt-1 text-sm text-slate-500">
+            Satış gelirleri, alış faturaları ve hizmet giderleri detaylı olarak listelenir.
+        </p>
+     </div>
+
+    <form method="get" class="mb-6 flex flex-wrap items-end gap-4 rounded-xl border bg-white p-4 shadow-sm">
+        <div>
+            <label class="mb-1 block text-sm font-semibold text-slate-700">Başlangıç Tarihi</label>
+            <input type="date"
+                   name="baslangicTarihi"
+                   value="@Model.BaslangicTarihi.ToString("yyyy-MM-dd")"
+                   class="rounded-lg border px-3 py-2 text-sm" />
+        </div>
+
+        <div>
+            <label class="mb-1 block text-sm font-semibold text-slate-700">Bitiş Tarihi</label>
+            <input type="date"
+                   name="bitisTarihi"
+                   value="@Model.BitisTarihi.ToString("yyyy-MM-dd")"
+                   class="rounded-lg border px-3 py-2 text-sm" />
+        </div>
+
+        <button type="submit"
+                class="rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white">
+            Filtrele
+        </button>
+
+        <a asp-controller="Financial"
+           asp-action="GelirGiderOzetiExcel"
+           asp-route-baslangicTarihi="@Model.BaslangicTarihi.ToString("yyyy-MM-dd")"
+           asp-route-bitisTarihi="@Model.BitisTarihi.ToString("yyyy-MM-dd")"
+           class="rounded-lg bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700">
+            Excel İndir
+        </a>
+
+    </form>
+
+    <div class="mb-6 grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div class="rounded-xl border bg-white p-5 shadow-sm">
+            <div class="text-sm text-slate-500">Toplam Gelir</div>
+            <div class="mt-2 text-2xl font-bold text-green-600">
+                @Model.TotalIncome.ToString("N2") ₺
+            </div>
+        </div>
+
+        <div class="rounded-xl border bg-white p-5 shadow-sm">
+            <div class="text-sm text-slate-500">Toplam Gider</div>
+            <div class="mt-2 text-2xl font-bold text-red-600">
+                @Model.TotalExpense.ToString("N2") ₺
+            </div>
+        </div>
+
+        <div class="rounded-xl border bg-white p-5 shadow-sm">
+            <div class="text-sm text-slate-500">Net Sonuç</div>
+            <div class="mt-2 text-2xl font-bold @(Model.NetResult >= 0 ? "text-green-600" : "text-red-600")">
+                @Model.NetResult.ToString("N2") ₺
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-6 rounded-xl border bg-white shadow-sm">
+        <div class="border-b px-5 py-4">
+            <h2 class="font-bold text-slate-800">Özet</h2>
+        </div>
+
+        <table class="w-full text-sm">
+            <thead class="bg-slate-50 text-left text-slate-600">
+                <tr>
+                    <th class="px-5 py-3">Tip</th>
+                    <th class="px-5 py-3">Kalem</th>
+                    <th class="px-5 py-3 text-right">Tutar</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y">
+                <tr>
+                    <td class="px-5 py-3 font-semibold text-green-600">Gelir</td>
+                    <td class="px-5 py-3">Satışlar</td>
+                    <td class="px-5 py-3 text-right">@Model.SalesIncome.ToString("N2") ₺</td>
+                </tr>
+
+                <tr>
+                    <td class="px-5 py-3 font-semibold text-red-600">Gider</td>
+                    <td class="px-5 py-3">Alışlar</td>
+                    <td class="px-5 py-3 text-right">@Model.PurchaseExpense.ToString("N2") ₺</td>
+                </tr>
+
+                <tr>
+                    <td class="px-5 py-3 font-semibold text-red-600">Gider</td>
+                    <td class="px-5 py-3">Hizmet Giderleri</td>
+                    <td class="px-5 py-3 text-right">@Model.ServiceExpense.ToString("N2") ₺</td>
+                </tr>
+
+                <tr class="bg-slate-50 font-bold">
+                    <td class="px-5 py-3" colspan="2">Net Sonuç</td>
+                    <td class="px-5 py-3 text-right @(Model.NetResult >= 0 ? "text-green-600" : "text-red-600")">
+                        @Model.NetResult.ToString("N2") ₺
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br />
+    <partial name="_IncomeExpenseTable" model="satislar" view-data='new ViewDataDictionary(ViewData)
+             {
+                 ["Baslik"] = "Satışlar",
+                 ["ColorClass"] = "text-green-600"
+             }' />
+    <br/>
+<partial name="_IncomeExpenseTable" model="alislar" view-data='new ViewDataDictionary(ViewData)
+         {
+             ["Baslik"] = "Alışlar",
+             ["ColorClass"] = "text-blue-600"
+         }' />
+    <br />
+<partial name="_IncomeExpenseTable" model="hizmetGiderleri" view-data='new ViewDataDictionary(ViewData)
+         {
+             ["Baslik"] = "Hizmet Giderleri",
+             ["ColorClass"] = "text-red-600"
+         }' />
+    
+
+</div>
+
+ 

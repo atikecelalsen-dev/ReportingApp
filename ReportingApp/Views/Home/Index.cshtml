@@ -8,7 +8,11 @@
     periyot == "haftalik" ? "Haftalık" :
     periyot == "aylik" ? "Aylık" :
     periyot == "yillik" ? "Yıllık" :
-    "Günlük";
+    periyot == "gunluk" ? "Günlük" :
+    "Özel tarihler için";
+
+    string baslangic = Context.Request.Query["BaslangicTarihi"];
+    string bitis = Context.Request.Query["BitisTarihi"];
 
     SalesReportDashboardModel satisRaporu = Model.SatisRaporu;
 }
@@ -23,16 +27,47 @@
             <p class="h1-yazi !text-2xl !lg:text-3xl">@baslik satış performansı.</p>
         </div>
 
-        <form method="get">
-            <select name="periyot"
-                    onchange="this.form.submit()"
-                    class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 shadow-sm">
-                <option value="gunluk" selected="@(periyot == "gunluk")">Günlük</option>
-                <option value="haftalik" selected="@(periyot == "haftalik")">Haftalık</option>
-                <option value="aylik" selected="@(periyot == "aylik")">Aylık</option>
-                <option value="yillik" selected="@(periyot == "yillik")">Yıllık</option>
-            </select>
-        </form>
+        <div class="flex flex-col">
+
+            <form method="get" class="mt-10 flex flex-row gap-4">
+                <div class="flex flex-col"> 
+                    <label class="mb-1 block text-sm font-semibold text-slate-700">Başlangıç Tarihi</label>
+                    <input type="date" value=@baslangic name="BaslangicTarihi" class="rounded-lg border px-3 py-2" />
+
+                </div>
+                <div class="flex flex-col">
+                    <label class="mb-1 block text-sm font-semibold text-slate-700">Bitiş Tarihi</label>
+                    <input type="date" value=@bitis name="BitisTarihi" class="rounded-lg border px-3 py-2" />
+                </div>
+                <button name="periyot" type="submit"  value="ozel" selected="@(periyot == "ozel")"
+                        class="mt-5 rounded-lg bg-slate-900 px-5 text-sm font-semibold text-white">
+                    Filtrele
+                </button>
+
+
+            </form>
+
+            <form method="get">
+                <div class="flex flex-row gap-5">
+                    <p class="py-4 text-lg font-semibold text-black"> Hızlı işlemler: </p>
+
+                    <button name="periyot" value="gunluk" type="submit" selected="@(periyot == "gunluk")" class="select-btn">
+                        Günlük
+                    </button>
+                    <button name="periyot" value="haftalik" type="submit" selected="@(periyot == "haftalik")" class="select-btn">
+                        Haftalık
+                    </button>
+                    <button name="periyot" value="aylik" type="submit" selected="@(periyot == "aylik")" class="select-btn">
+                        Aylık
+                    </button>
+                    <button name="periyot" value="yillik" type="submit" " selected="@(periyot == "yillik")" class="select-btn">
+                        Yıllık
+                    </button>
+                </div>
+
+            </form>
+        </div>
+      
     </div>
 
     <div class="mb-8 grid grid-cols-1 gap-4 md:grid-cols-4">
@@ -131,15 +166,19 @@
 
     </div>
 
+    
+
     <section id="CiroRaporu" class="my-12 scroll-mt-24">
+
         @await Html.PartialAsync("SatisRaporu", Model.SatisRaporu)
     </section>
-    <section id="UrunKarlilikRaporu" class="my-12 scroll-mt-24">
+
+    @* <section id="UrunKarlilikRaporu" class="my-12 scroll-mt-24">
         @await Html.PartialAsync("UrunKarlilik", Model.UrunKarlilik)
     </section>
     <section id="MusteriKarlilikRaporu" class="my-12 scroll-mt-24">
         @await Html.PartialAsync("MusteriKarlilik", Model.MusteriKarlilik)
-    </section>
+    </section> *@
 
 </div>
 

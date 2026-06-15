@@ -16,9 +16,18 @@
 }
 .rounded-btn-blue {
     @apply items-center justify-center rounded-xl bg-blue-600 px-6 py-3 text-sm font-bold !text-white no-underline shadow-sm transition hover:bg-blue-700;
-} 
+}
+
+.select-btn {
+    @apply border-0 bg-transparent p-0 text-sm font-bold text-blue-600 underline shadow-none hover:text-blue-800;
+}
+
 .navbar-item {
     @apply text-base text-black no-underline transition hover:text-red-600;
+}
+
+.sub-navbar-item {
+    @apply block px-4 py-3 hover:bg-gray-100;
 }
 
 .kirmizi-yazi {
@@ -30,7 +39,7 @@
     @apply mb-2 inline-flex rounded-lg bg-red-100 px-3 py-2 text-lg font-semibold tracking-wide text-red-600 lg:mb-4;
 }
 .h1-yazi {
-    @apply text-5xl font-semibold leading-tight tracking-tight text-slate-900 lg:text-6xl;
+    @apply text-5xl leading-tight font-semibold tracking-tight text-slate-900 lg:text-6xl;
 }
 
 .dropdown-btn {
@@ -56,22 +65,22 @@
 
 
 .footer-text {
-    @apply mb-4 mt-8 text-sm tracking-wide text-gray-400;
+    @apply mt-8 mb-4 text-sm tracking-wide text-gray-400;
 }
 
 .phone {
-    @apply absolute left-1/2 top-1/2 h-[320px] w-[160px] origin-center object-contain drop-shadow-2xl transition-all duration-700 ease-in-out will-change-transform lg:h-[570px] lg:w-[280px];
+    @apply absolute top-1/2 left-1/2 h-[320px] w-[160px] origin-center object-contain drop-shadow-2xl transition-all duration-700 ease-in-out will-change-transform lg:h-[570px] lg:w-[280px];
 }
 
 .phone-left {
-    @apply z-[2] -translate-x-[95%] -translate-y-1/2 -rotate-[14deg] scale-[.92] lg:-translate-x-[130%] lg:-rotate-[10deg];
+    @apply z-[2] -translate-x-[95%] -translate-y-1/2 scale-[.92] -rotate-[14deg] lg:-translate-x-[130%] lg:-rotate-[10deg];
 }
 
 .phone-center {
-    @apply z-[3] -translate-x-1/2 -translate-y-1/2 rotate-0 scale-100 lg:scale-[1.08];
+    @apply z-[3] -translate-x-1/2 -translate-y-1/2 scale-100 rotate-0 lg:scale-[1.08];
 }
 
 .phone-right {
-    @apply z-[2] -translate-x-[5%] -translate-y-1/2 rotate-[14deg] scale-[.92] lg:rotate-[10deg] lg:translate-x-[30%];
+    @apply z-[2] -translate-x-[5%] -translate-y-1/2 scale-[.92] rotate-[14deg] lg:translate-x-[30%] lg:rotate-[10deg];
 }
 

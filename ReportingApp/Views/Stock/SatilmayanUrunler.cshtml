@@ -1,0 +1,148 @@
+﻿@model Reporting.Models.UnsoldProductsReportViewModel
+
+@{
+    ViewData["Title"] = "Satılmayan Ürünler Raporu";
+}
+
+<div class="px-4 pb-8 md:px-24 md:pb-16">
+
+    <div class="my-12">
+        <h1 class="kirmizi-baslik">Satılmayan Ürünler Raporu</h1>
+        <p class="mt-1 text-sm text-slate-500">
+            Uzun süredir satılmayan ve hiç satılmamış ürünleri gösterir.
+        </p>
+    </div>
+
+    <div class="mb-6 grid grid-cols-1 gap-4 md:grid-cols-3">
+
+        <div class="flex flex-row justify-between rounded-2xl border border-slate-200 bg-green-500 p-6 shadow-sm">
+            <div>
+                <div class="text-base font-medium text-white">Toplam Ürün</div>
+                <div class="mt-3 text-3xl font-bold text-white">
+                    @Model.ToplamUrunSayisi
+                </div>
+            </div>
+
+            <div class="flex h-14 w-14 items-center justify-center rounded-full bg-white/20">
+                <icon name="warehouse" class="h-6 w-6 text-white"></icon>
+            </div>
+
+        </div>
+
+        <div class="flex flex-row justify-between rounded-2xl border border-slate-200 bg-yellow-500 p-6 shadow-sm">
+            <div>
+                <div class="text-base font-medium text-white">Uzun Süredir Satılmayan</div>
+                <div class="mt-3 text-3xl font-bold text-white">
+                    @Model.UzunSuredirSatilmayanSayisi
+                </div>
+            </div>
+            <div class="flex h-14 w-14 items-center justify-center rounded-full bg-white/20">
+                <icon name="trend-down" class="h-6 w-6 text-white"></icon>
+            </div>
+        </div>
+
+        <div class="flex flex-row justify-between rounded-2xl border border-slate-200 bg-red-500 p-6 shadow-sm">
+            <div>
+                <div class="text-base font-medium text-white">Hiç Satılmamış</div>
+                <div class="mt-3 text-3xl font-bold text-white">
+                    @Model.HicSatilmamisSayisi
+                </div>
+            </div>
+            <div class="flex h-14 w-14 items-center justify-center rounded-full bg-white/20">
+                <icon name="warning-triangle" class="h-6 w-6 text-white"></icon>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="mb-6 rounded-xl border bg-white shadow-sm">
+        <div class="border-b px-5 py-4">
+            <h2 class="font-bold text-yellow-600">Uzun Süredir Satılmayan Ürünler</h2>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead class="bg-slate-50 text-left text-slate-600">
+                    <tr>
+                        <th class="px-5 py-3">Stok Kodu</th>
+                        <th class="px-5 py-3">Stok Adı</th>
+                        <th class="px-5 py-3 text-right">Mevcut Stok</th>
+                        <th class="px-5 py-3">Son Satış</th>
+                        <th class="px-5 py-3 text-right">Geçen Gün</th>
+                    </tr>
+                </thead>
+
+                <tbody class="divide-y">
+                    @if (Model.UzunSuredirSatilmayanlar.Any())
+                    {
+                        foreach (var item in Model.UzunSuredirSatilmayanlar)
+                        {
+                            <tr class="hover:bg-slate-50">
+                                <td class="px-5 py-3">@item.StokKodu</td>
+                                <td class="px-5 py-3">@item.StokAdi</td>
+                                <td class="px-5 py-3 text-right">@item.MevcutStok.ToString("N2")</td>
+                                <td class="px-5 py-3">
+                                    @item.SonSatisTarihi?.ToString("dd.MM.yyyy")
+                                </td>
+                                <td class="px-5 py-3 text-right font-semibold text-orange-600">
+                                    @item.GecenGun
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="5" class="px-5 py-6 text-center text-slate-500">
+                                Kayıt bulunamadı.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="rounded-xl border bg-white shadow-sm">
+        <div class="border-b px-5 py-4">
+            <h2 class="font-bold text-red-600">Hiç Satılmamış Ürünler</h2>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead class="bg-slate-50 text-left text-slate-600">
+                    <tr>
+                        <th class="px-5 py-3">Stok Kodu</th>
+                        <th class="px-5 py-3">Stok Adı</th>
+                        <th class="px-5 py-3">Mevcut Stok</th>
+                        <th class="px-5 py-3">Son Satış</th>
+                    </tr>
+                </thead>
+
+                <tbody class="divide-y">
+                    @if (Model.HicSatilmamisUrunler.Any())
+                    {
+                        foreach (var item in Model.HicSatilmamisUrunler)
+                        {
+                            <tr class="hover:bg-slate-50">
+                                <td class="px-5 py-3">@item.StokKodu</td>
+                                <td class="px-5 py-3">@item.StokAdi</td>
+                                <td class="px-5 py-3">@item.MevcutStok.ToString("N2")</td>
+                                <td class="px-5 py-3 text-slate-400">Yok</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="4" class="px-5 py-6 text-center text-slate-500">
+                                Kayıt bulunamadı.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>

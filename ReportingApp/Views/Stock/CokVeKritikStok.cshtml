@@ -1,0 +1,118 @@
+﻿@model Reporting.Models.InventoryReportViewModel
+
+@{
+    var enCokStok = Model.Stoklar
+        .Where(x => x.MevcutStok > 0)
+        .OrderByDescending(x => x.MevcutStok)
+        .Take(10)
+        .ToList();
+
+    var kritikStoklar = Model.Stoklar
+        .Where(x => x.MevcutStok <= 10)
+        .OrderBy(x => x.MevcutStok)
+        .Take(10)
+        .ToList();
+
+    decimal maxStok = enCokStok.Any() ? enCokStok.Max(x => x.MevcutStok) : 1;
+    decimal maxKritik = kritikStoklar.Any() ? kritikStoklar.Max(x => Math.Abs(x.MevcutStok)) : 1;
+}
+
+<div class="scroll-mt-24 px-4 pb-8 md:px-24 md:pb-16">
+    
+    <div class="my-8">
+        <h1 class="kirmizi-baslik"> Ürün Stokları </h1>
+        <p class="mt-1 text-sm text-slate-500">
+            En Çok Stokta Olan Ve Kritik / Sıfır Stokta Olan Ürünler
+        </p>
+    </div>
+
+        <div class="mb-8 grid grid-cols-1 gap-6 lg:grid-cols-1">
+
+            <div class="rounded-2xl border border-slate-500 bg-white p-5 shadow-sm">
+                <div class="mb-5 flex items-center justify-between">
+                    <h2 class="text-lg font-bold text-slate-900">
+                        En Çok Stokta Olan 10 Ürün
+                    </h2>
+                    <span class="text-sm text-slate-500">Miktara göre</span>
+                </div>
+
+                <div class="space-y-4">
+                    @foreach (var item in enCokStok)
+                    {
+                        decimal width = maxStok == 0 ? 0 : (item.MevcutStok / maxStok) * 100;
+
+                        <div>
+                            <div class="mb-1 flex items-center justify-between gap-4">
+                                <p class="truncate text-sm font-semibold text-slate-700">
+                                    @item.StokAdi
+                                </p>
+
+                                <p class="text-sm font-bold whitespace-nowrap text-slate-900">
+                                    @item.MevcutStok.ToString("N2")
+                                </p>
+                            </div>
+
+                            <div class="h-3 overflow-hidden rounded-full bg-slate-100">
+                                <div class="h-full rounded-full bg-blue-600"
+                                     style="width:@width.ToString("0").Replace(",", ".")%">
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+        <section id="kritikStok" class="mt-12 scroll-mt-24">
+
+     
+            <div class="rounded-2xl border border-slate-500 bg-white p-5 shadow-sm">
+                <div class="mb-5 flex items-center justify-between">
+                    <h2 class="text-lg font-bold text-slate-900">
+                        Kritik / Sıfır Stokta Olan 10 Ürün
+                    </h2>
+                    <span class="text-sm text-slate-500">Azalan stok riski</span>
+                </div>
+
+                <div class="space-y-4">
+                    @foreach (var item in kritikStoklar)
+                    {
+                        decimal width = maxKritik == 0
+                            ? 0
+                            : (Math.Abs(item.MevcutStok) / maxKritik) * 100;
+
+                        if (width < 8)
+                        {
+                            width = 8;
+                        }
+
+                        string barColor =
+                            item.MevcutStok <= 0 ? "bg-rose-600" : "bg-amber-500";
+
+                        <div>
+                            <div class="mb-1 flex items-center justify-between gap-4">
+                                <p class="truncate text-sm font-semibold text-slate-700">
+                                    @item.StokAdi
+                                </p>
+
+                                <p class="text-sm font-bold whitespace-nowrap text-slate-700">
+                                    @item.MevcutStok.ToString("N2")
+                                </p>
+                            </div>
+
+                            <div class="h-3 overflow-hidden rounded-full bg-slate-100">
+                                <div class="h-full rounded-full @barColor"
+                                     style="width:@width.ToString("0").Replace(",", ".")%">
+                                </div>
+                            </div>
+
+                            <p class="mt-1 text-xs text-slate-500">
+                                @item.StokDurumu
+                            </p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </section>
+        </div>
+
+</div>

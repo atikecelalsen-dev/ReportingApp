@@ -23,13 +23,55 @@
 
                 <!-- Nav -->
                 <nav id="mainNav"
-                     class="absolute left-0 top-20 flex hidden w-full flex-col items-center gap-5 border-b border-gray-200 bg-gray-50 px-6 py-6 text-sm font-semibold text-gray-800
+                     class="absolute top-20 left-0 flex hidden w-full flex-col items-center gap-5 border-b border-gray-200 bg-gray-50 px-6 py-6 text-sm font-semibold text-gray-800
                     lg:static lg:flex lg:w-auto lg:flex-row lg:gap-14 lg:justify-self-center lg:border-0 lg:bg-gray-50 lg:px-0 lg:py-0">
 
-                <a asp-controller="Home" asp-action="Index" asp-fragment="CiroRaporu"  class="navbar-item">  Kar/Zarar Raporu  </a>
-                <a asp-controller="Home" asp-action="Index" asp-fragment="UrunKarlilikRaporu"  class="navbar-item"> Ürün karlılık raporu </a>
-                <a asp-controller="Home" asp-action="Index" asp-fragment="MusteriKarlilikRaporu" class="navbar-item"> Müşteri karlılık raporu </a>
-                <a asp-controller="Home" asp-action="Envanter" class="navbar-item"> Envanter raporu </a>
+                    <div class="group relative">
+                        <button class="navbar-item flex items-center gap-1"> Satış Raporları </button>
+                        <div class="absolute top-full left-0 z-50 hidden min-w-[220px] pt-2 group-hover:block">
+                            <div class="rounded-lg border border-gray-200 bg-white shadow-lg">
+                                <a asp-controller="Home" asp-action="Index" class="sub-navbar-item"> Periyodik Satış Raporları </a>
+                            <a asp-controller="Home" asp-action="Index" asp-fragment="CiroRaporu" class="sub-navbar-item"> Kar/Zarar Raporu </a>
+                            <a asp-controller="Home" asp-action="UrunKarlilik"   class="sub-navbar-item"> Ürün karlılık raporu </a>
+                            <a asp-controller="Home" asp-action="MusteriKarlilik"   class="sub-navbar-item"> Müşteri karlılık raporu </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="group relative">
+                        <button class="navbar-item flex items-center gap-1"> Finans Raporları </button>
+                        <div class="absolute top-full left-0 z-50 hidden min-w-[220px] pt-2 group-hover:block">
+                            <div class="rounded-lg border border-gray-200 bg-white shadow-lg">
+                                <a asp-controller="Financial" asp-action="GelirGiderOzeti" class="sub-navbar-item"> Gelir-Gider Özeti </a>
+                                <a asp-controller="Financial" asp-action="CariHesapEkstresi" class="sub-navbar-item"> Cari Hesap Ekstresi </a>
+                                <a asp-controller="Home" asp-action="Index" asp-fragment="CiroRaporu" class="sub-navbar-item"> Kar/Zarar Raporu </a>
+                            </div>
+                        </div>
+                    </div>
+
+                <div class="group relative">
+                    <button class="navbar-item flex items-center gap-1"> Stok Raporları </button>
+                    <div class="absolute top-full left-0 z-50 hidden min-w-[220px] pt-2 group-hover:block">
+                        <div class="rounded-lg border border-gray-200 bg-white shadow-lg">
+                            <a asp-controller="Envanter" asp-action="Envanter" asp-fragment="stokListesi" class="sub-navbar-item">  Tüm Stok Listesi </a>
+                            <a asp-controller="Stock" asp-action="CokVeKritikStok" class="sub-navbar-item"> En Çok Stokta Olan Ürünler </a>
+                            <a asp-controller="Stock" asp-action="CokVeKritikStok" asp-fragment="kritikStok" class="sub-navbar-item"> Kritik stoktaki Ürünler </a>
+                            <a asp-controller="Stock" asp-action="StokHareketRaporu" class="sub-navbar-item">  Stok Hareket Raporu </a>
+                            <a asp-controller="Stock" asp-action="SatilmayanUrunler" class="sub-navbar-item"> Satılmayan Ürünler  </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="group relative">
+                    <button class="navbar-item flex items-center gap-1"> Envanter Raporları </button>
+                    <div class="absolute top-full left-0 z-50 hidden min-w-[220px] pt-2 group-hover:block">
+                        <div class="rounded-lg border border-gray-200 bg-white shadow-lg">
+                            <a asp-controller="Envanter" asp-action="Envanter" asp-fragment="toplamStoklar" class="sub-navbar-item"> Toplam Değerler </a>
+                            <a asp-controller="Envanter" asp-action="Envanter" asp-fragment="stokListesi" class="sub-navbar-item">  Stok ve Envanter Değeri </a>
+                        </div>
+                    </div>
+                </div>
+
                 </nav>
 
                 <div></div>
