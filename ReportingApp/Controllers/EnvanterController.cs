@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ClosedXML.Excel;
+using Microsoft.AspNetCore.Mvc;
 using Reporting.Models;
 using Reporting.Services;
+using Reporting.Services.Excel;
+
 
 namespace ReportingApp.Controllers
 {
@@ -21,39 +24,28 @@ namespace ReportingApp.Controllers
         // Envanter raporu 
         public IActionResult Envanter()
         {
-            InventoryReportService service = new InventoryReportService(_connStr, _firmaNo, _donemNo);
+            StockAndInventoryReportService service = new StockAndInventoryReportService(_connStr, _firmaNo, _donemNo);
 
             InventoryReportViewModel model = service.EnvanterRaporu();
 
             return View(model);
         }
 
-        //public IActionResult CokVeKritikStok()
-        //{
-        //    InventoryReportService service = new InventoryReportService(_connStr, _firmaNo, _donemNo);
+        public IActionResult EnvanterExcel()
+        {
+            var excelService = new StockAndInventoryExcelExportService(_connStr, _firmaNo, _donemNo);
 
-        //    InventoryReportViewModel model = service.EnvanterRaporu();
+            byte[] fileBytes = excelService.EnvanterExcel();
 
-        //    return View(model);
-        //}
+            return File(
+                fileBytes,
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                $"StokVeEnvanterRaporu_{DateTime.Now:yyyyMMddHHmm}.xlsx"
+            );
+        }
 
-        //public IActionResult StokHareketRaporu(DateTime? baslangicTarihi, DateTime? bitisTarihi)
-        //{
-        //    var service = new InventoryReportService(_connStr, _firmaNo, _donemNo);
+      
 
-        //    var model = service.GetStockMovementReport(baslangicTarihi, bitisTarihi);
-
-        //    return View(model);
-        //}
-
-        //public IActionResult SatilmayanUrunler()
-        //{
-        //    var service = new InventoryReportService(_connStr, _firmaNo, _donemNo);
-
-        //    var model = service.GetUnsoldProductsReport();
-
-        //    return View(model);
-        //}
 
     }
 }

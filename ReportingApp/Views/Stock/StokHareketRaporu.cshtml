@@ -12,6 +12,7 @@
             <p class="mt-1 text-sm text-slate-500">
                 Seçilen tarih aralığında en çok ve en az hareket eden ürünler.
             </p>
+
         </div>
 
 
@@ -37,7 +38,15 @@
                     class="mt-5 rounded-lg bg-slate-800 px-4 text-sm font-semibold text-white">
                 Filtrele
             </button>
+            <a asp-controller="Stock"
+               asp-action="StokHareketRaporuExcel"
+               asp-route-baslangicTarihi="@Model.BaslangicTarihi.ToString("yyyy-MM-dd")"
+               asp-route-bitisTarihi="@Model.BitisTarihi.ToString("yyyy-MM-dd")"
+               class="mt-5 rounded-lg bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700">
+                Excel İndir
+                <icon name="down" class="h-5 w-5 text-white"></icon>
 
+            </a>
         </form>
     </div>
    

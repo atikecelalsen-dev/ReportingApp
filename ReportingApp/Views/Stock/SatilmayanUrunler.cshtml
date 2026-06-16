@@ -6,11 +6,21 @@
 
 <div class="px-4 pb-8 md:px-24 md:pb-16">
 
-    <div class="my-12">
-        <h1 class="kirmizi-baslik">Satılmayan Ürünler Raporu</h1>
-        <p class="mt-1 text-sm text-slate-500">
-            Uzun süredir satılmayan ve hiç satılmamış ürünleri gösterir.
-        </p>
+    <div class="my-8 flex items-center justify-between">
+        <div>
+            <h1 class="kirmizi-baslik">Satılmayan Ürünler Raporu</h1>
+            <p class="mt-1 text-sm text-slate-500">
+                Uzun süredir satılmayan ve hiç satılmamış ürünleri gösterir.
+            </p>
+        </div>
+
+        <a asp-controller="Stock"
+           asp-action="SatilmayanUrunlerExcel"
+           class="rounded-lg bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700">
+            Excel İndir
+            <icon name="down" class="h-5 w-5 text-white"></icon>
+
+        </a>
     </div>
 
     <div class="mb-6 grid grid-cols-1 gap-4 md:grid-cols-3">

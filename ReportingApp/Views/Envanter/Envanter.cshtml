@@ -67,10 +67,19 @@
     <section id="stokListesi" class="my-12 scroll-mt-24">
     <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
         <div class="mb-5 flex items-center justify-between">
-            <h2 class="text-lg font-bold text-slate-900">Stok Detayları</h2>
-            <span class="text-sm text-slate-500">
-                @Model.Stoklar.Count ürün
-            </span>
+            <div>
+                <h2 class="text-lg font-bold text-slate-900">Stok Detayları</h2>
+                <span class="text-sm text-slate-500">
+                    @Model.Stoklar.Count ürün
+                </span>
+            </div> 
+
+            <a asp-controller="Envanter"
+                asp-action="EnvanterExcel"
+                class="rounded-lg bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700">
+                Excel İndir
+                <icon name="down" class="h-5 w-5 text-white"></icon>
+            </a>
         </div>
 
         <div class="overflow-x-auto">

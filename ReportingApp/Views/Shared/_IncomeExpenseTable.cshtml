@@ -5,11 +5,11 @@
     string colorClass = ViewData["ColorClass"]?.ToString() ?? "";
 }
 
-<div class="mb-6 rounded-xl border bg-white shadow-sm">
-    <div class="flex items-center justify-between border-b px-5 py-4">
-        <h2 class="font-bold @colorClass">@baslik</h2>
+<div class="mb-6 overflow-hidden rounded-xl border bg-white shadow-sm">
+    <div class="flex @colorClass items-center justify-between rounded-t-xl border-b px-5 py-4">
+        <h2 class="font-bold text-white">@baslik</h2>
 
-        <div class="text-sm font-bold @colorClass">
+        <div class="text-sm font-bold text-white">
             @Model.Sum(x => x.Tutar).ToString("N2") ₺
         </div>
     </div>

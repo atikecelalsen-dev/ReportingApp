@@ -57,58 +57,58 @@
            asp-route-bitisTarihi="@Model.BitisTarihi.ToString("yyyy-MM-dd")"
            class="rounded-lg bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700">
             Excel İndir
+            <icon name="down" class="h-5 w-5 text-white"></icon>
         </a>
 
     </form>
 
     @if (Model.CariRef == null)
     {
-        <div class="rounded-xl border bg-white p-6 text-slate-500 shadow-sm">
+        <div class="rounded-xl border bg-white p-6 text-base font-medium text-slate-700 shadow-sm">
             Lütfen cari seçiniz.
         </div>
     }
     else
     {
         <div class="mb-6 rounded-xl border bg-white p-5 shadow-sm">
-            <div class="text-sm text-slate-500">Seçili Cari</div>
+            <div class="text-base font-medium text-slate-700">Seçili Cari</div>
             <div class="mt-1 text-lg font-bold text-slate-900">
                 @Model.CariKodu - @Model.CariAdi
             </div>
         </div>
 
         <div class="mb-6 grid grid-cols-1 gap-4 md:grid-cols-4">
-
-            <div class="rounded-xl border bg-white p-5 shadow-sm">
-                <div class="text-sm text-slate-500">Devir Bakiye</div>
-                <div class="mt-2 text-xl font-bold text-slate-800">
+            <div class="rounded-2xl border border-slate-200 bg-gray-500 p-6 shadow-sm">
+                <div class="text-base font-medium text-white">Devir Bakiye</div>
+                <div class="mt-2 text-3xl font-bold text-white">
                     @Model.DevirBakiye.ToString("N2") ₺
                 </div>
             </div>
 
-            <div class="rounded-xl border bg-white p-5 shadow-sm">
-                <div class="text-sm text-slate-500">Toplam Borç</div>
-                <div class="mt-2 text-xl font-bold text-red-600">
+            <div class="rounded-2xl border border-slate-200 bg-red-500 p-6 shadow-sm">
+                <div class="text-base font-medium text-white">Toplam Borç</div>
+                <div class="mt-2 text-3xl font-bold text-white">
                     @Model.ToplamBorc.ToString("N2") ₺
                 </div>
             </div>
 
-            <div class="rounded-xl border bg-white p-5 shadow-sm">
-                <div class="text-sm text-slate-500">Toplam Alacak</div>
-                <div class="mt-2 text-xl font-bold text-green-600">
+            <div class="rounded-2xl border border-slate-200 bg-green-500 p-6 shadow-sm">
+                <div class="text-base font-medium text-white">Toplam Alacak</div>
+                <div class="mt-2 text-3xl font-bold text-white">
                     @Model.ToplamAlacak.ToString("N2") ₺
                 </div>
             </div>
 
-            <div class="rounded-xl border bg-white p-5 shadow-sm">
-                <div class="text-sm text-slate-500">Son Bakiye</div>
-                <div class="mt-2 text-xl font-bold @(Model.SonBakiye >= 0 ? "text-red-600" : "text-green-600")">
+            <div class="rounded-2xl border border-slate-200 @(Model.SonBakiye >= 0 ? "bg-green-500" : "bg-red-500") p-6 shadow-sm">
+                <div class="text-base font-medium text-white">Son Bakiye</div>
+                <div class="mt-2 text-3xl font-bold text-white">
                     @Model.SonBakiye.ToString("N2") ₺
                 </div>
             </div>
 
         </div>
 
-        <div class="rounded-xl border bg-white shadow-sm">
+        <div class="overflow-hidden rounded-xl border bg-white shadow-sm">
             <div class="border-b px-5 py-4">
                 <h2 class="font-bold text-slate-800">Cari Hareketleri</h2>
             </div>

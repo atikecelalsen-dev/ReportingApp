@@ -19,11 +19,21 @@
 
 <div class="scroll-mt-24 px-4 pb-8 md:px-24 md:pb-16">
     
-    <div class="my-8">
-        <h1 class="kirmizi-baslik"> Ürün Stokları </h1>
-        <p class="mt-1 text-sm text-slate-500">
-            En Çok Stokta Olan Ve Kritik / Sıfır Stokta Olan Ürünler
-        </p>
+    <div class="my-8 flex items-center justify-between">
+        <div>
+            <h1 class="kirmizi-baslik"> Ürün Stokları </h1>
+            <p class="mt-1 text-sm text-slate-500">
+                En Çok Stokta Olan Ve Kritik / Sıfır Stokta Olan Ürünler
+            </p>
+        </div>
+        
+
+        <a asp-controller="Stock"
+           asp-action="CokVeKritikStokExcel"
+           class="rounded-lg bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700">
+            Excel İndir
+            <icon name="down" class="h-5 w-5 text-white"></icon>
+        </a>
     </div>
 
         <div class="mb-8 grid grid-cols-1 gap-6 lg:grid-cols-1">
